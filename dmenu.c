@@ -132,7 +132,7 @@ drawmenu(void)
 	unsigned int curpos;
 	struct item *item;
 	int x = 0, y = 0, w;
- char *censort;
+    char *censort;
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
@@ -145,13 +145,19 @@ drawmenu(void)
 	w = (lines > 0 || !matches) ? mw - x : inputw;
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	if (passwd) {
-	        censort = ecalloc(1, sizeof(text));
-		memset(censort, '.', strlen(text));
+        size_t asterlen = strlen(asterisk);
+        censort = ecalloc(1, sizeof(text)*asterlen);
+        for (int i = 0; i < asterlen * strlen(text); i += asterlen) {
+            memcpy(&censort[i], asterisk, asterlen);
+		}
 		drw_text(drw, x, 0, w, bh, lrpad / 2, censort, 0);
+		drw_font_getexts(drw->fonts, censort, cursor * asterlen, &curpos, NULL);
 		free(censort);
-	} else drw_text(drw, x, 0, w, bh, lrpad / 2, text, 0);
+	} else {
+        drw_text(drw, x, 0, w, bh, lrpad / 2, text, 0);
+        curpos = TEXTW(text) - TEXTW(&text[cursor]);
+    }
 
-	curpos = TEXTW(text) - TEXTW(&text[cursor]);
 	if ((curpos += lrpad / 2 - 1) < w) {
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		drw_rect(drw, x + curpos, 2, 2, bh - 4, 1, 0);
@@ -275,8 +281,9 @@ insert(const char *str, ssize_t n)
 {
 	if (strlen(text) + n > sizeof text - 1)
 		return;
+
 	/* move existing text out of the way, insert new text, and update cursor */
-	memmove(&text[cursor + n], &text[cursor], sizeof text - cursor - MAX(n, 0));
+	memmove(&text[cursor + n], &text[cursor], sizeof(text) - cursor - MAX(n, 0));
 	if (n > 0)
 		memcpy(&text[cursor], str, n);
 	cursor += n;
