@@ -1,5 +1,5 @@
 # dmenu version
-VERSION = 4.9
+VERSION = 4.9.1a
 
 # paths
 PREFIX = /usr/local
