@@ -350,7 +350,7 @@ keypress(XKeyEvent *ev)
 		case XK_j: /* fallthrough */
 		case XK_J: /* fallthrough */
 		case XK_m: /* fallthrough */
-		case XK_M: ksym = XK_Return; ev->state &= ~ControlMask; break;
+		case XK_M: ksym = XK_KP_Enter; ev->state &= ~ControlMask; break;
 		case XK_n: ksym = XK_Down;      break;
 		case XK_p: ksym = XK_Up;        break;
 
@@ -476,8 +476,16 @@ insert:
 		calcoffsets();
 		break;
 	case XK_Return:
-	case XK_KP_Enter:
 		puts((sel && (ev->state & ShiftMask)) ? sel->text : text);
+		if (!(ev->state & ControlMask)) {
+			cleanup();
+			exit(0);
+		}
+		if (sel)
+			sel->out = 1;
+		break;
+	case XK_KP_Enter:
+		puts((sel && !(ev->state & ShiftMask)) ? sel->text : text);
 		if (!(ev->state & ControlMask)) {
 			cleanup();
 			exit(0);
