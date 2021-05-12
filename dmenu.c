@@ -477,7 +477,7 @@ insert:
 		break;
 	case XK_Return:
 	case XK_KP_Enter:
-		puts((sel && !(ev->state & ShiftMask)) ? sel->text : text);
+		puts((sel && !(ev->state & ShiftMask)) ? text : sel->text);
 		if (!(ev->state & ControlMask)) {
 			cleanup();
 			exit(0);
