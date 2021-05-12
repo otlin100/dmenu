@@ -396,7 +396,7 @@ keypress(XKeyEvent *ev)
 		case XK_j: ksym = XK_Down;  break;
 		case XK_k: ksym = XK_Up; break;
 		case XK_l: ksym = XK_Down;  break;
-        case XK_o: ksym = XK_Return; break;
+        case XK_o: ksym = XK_KP_Enter; break;
 		case XK_v: XConvertSelection(dpy, clip,
                            utf8, utf8, win, CurrentTime); return;
 		case XK_p: XConvertSelection(dpy, XA_PRIMARY,
