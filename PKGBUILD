@@ -7,7 +7,7 @@
 
 pkgname=dmenu-lin-git
 _pkgname=dmenu-lin
-pkgver=4.9.1a.r9.9f7ce70
+pkgver=4.9.1a.r10.35783e6
 pkgrel=1
 pkgdesc="A generic menu for X"
 url='https://github.com/otlin100/dmenu.git'
